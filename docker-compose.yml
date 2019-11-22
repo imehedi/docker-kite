@@ -1,0 +1,15 @@
+version: "3"
+services:
+  app1:
+    build: app
+    command: python app.py
+    ports:
+      - "8080:80"
+      - "8443:8443"
+    volumes:
+      - ./app:/app
+      - ./data:/data
+    links:
+      - redis
+    environment:
+      - ENV_VAR1=env_var1_value
