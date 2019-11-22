@@ -5,6 +5,12 @@ LABEL Version=0.1
 
 USER root
 
+# Add GCP SDk
+RUN mkdir -p /etc/yum.repos.d/
+COPY repo-file/* /etc/yum.repos.d/
+# Copy init for bootstrap
+COPY docker-entrypoint.sh /usr/local/bin/
+
 # Add a few essentials
 RUN yum -y install epel-release && \
     yum -y update && \
@@ -33,9 +39,7 @@ RUN wget --quiet https://releases.hashicorp.com/terraform/0.11.3/terraform_0.11.
   && mv terraform /usr/local/bin/terraform \
   && rm terraform_0.11.3_linux_amd64.zip
 
-# Add GCP SDk
-RUN mkdir -p /etc/yum.repos.d/
-COPY repo-file/* /etc/yum.repos.d/
+
 
 RUN yum -y update && \
     yum -y install google-cloud-sdk \
@@ -51,6 +55,4 @@ RUN yum -y update && \
     google-cloud-sdk-pubsub-emulator && \
     yum -y clean all
 
-# Copy init for bootstrap
-COPY docker-entrypoint.sh /usr/local/bin/
 
